@@ -19,15 +19,17 @@ void wakeOnLan(void) {
 }
 
 static bool buildMACAddress(uint8_t macAddress[WOL_MAC_ADDRESS_LENGTH]) {
+    char trailing = '\0';
     return sscanf(
         WOL_MAC_ADDRESS,
-        "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
+        "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx%c",
         &macAddress[0],
         &macAddress[1],
         &macAddress[2],
         &macAddress[3],
         &macAddress[4],
-        &macAddress[5]
+        &macAddress[5],
+        &trailing
     ) == WOL_MAC_ADDRESS_LENGTH;
 }
 
