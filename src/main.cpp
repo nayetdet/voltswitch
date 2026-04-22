@@ -1,3 +1,4 @@
+#include <api_client.h>
 #include <wifi.h>
 #include <wol.h>
 
