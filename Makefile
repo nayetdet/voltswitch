@@ -1,4 +1,4 @@
-.PHONY: run build upload monitor clean
+.PHONY: run build upload monitor reset clean
 
 BAUD_RATE ?= 115200
 PORT ?= /dev/ttyUSB0
@@ -13,6 +13,9 @@ upload:
 
 monitor:
 	pio device monitor -b $(BAUD_RATE) -p $(PORT)
+
+reset:
+	pio device reset -p $(PORT)
 
 clean:
 	pio run -t clean

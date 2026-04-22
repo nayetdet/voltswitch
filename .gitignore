@@ -1,3 +1,4 @@
 .pio/
+.codex
 .vscode/
 .env
