@@ -1,4 +1,4 @@
-#include "api_client.h"
+#include "voltswitch_api_client.h"
 
 bool healthy(void) {
     int code = request(API_URL, "GET");

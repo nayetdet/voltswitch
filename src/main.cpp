@@ -1,8 +1,8 @@
-#include <actions.h>
-#include <api_client.h>
-#include <schedule.h>
-#include <wifi.h>
-#include <wol.h>
+#include "action.h"
+#include "voltswitch_api_client.h"
+#include "schedule.h"
+#include "wifi.h"
+#include "wol.h"
 
 void setup(void) {
     Serial.begin(115200);

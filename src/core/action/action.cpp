@@ -1,4 +1,4 @@
-#include "actions.h"
+#include "action.h"
 
 void retry(void (*fn)(), bool (*shouldStop)()) {
     for (size_t i = 0; i < ACTION_MAX_RETRIES; i++) {
