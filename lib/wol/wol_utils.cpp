@@ -24,11 +24,11 @@ void buildPacket(uint8_t packet[WOL_PACKET_LENGTH], uint8_t macAddress[WOL_MAC_A
     }
 }
 
-void sendPacket(WiFiUDP udp, uint8_t packet[WOL_PACKET_LENGTH]) {
+void sendPacket(WiFiUDP& udp, const uint8_t packet[WOL_PACKET_LENGTH]) {
     const uint16_t port = static_cast<uint16_t>(strtol(WOL_PORT, nullptr, 10));
     udp.begin(port);
     udp.beginPacket(WOL_BROADCAST_IP, port);
-    udp.write(packet, sizeof(packet));
+    udp.write(packet, WOL_PACKET_LENGTH);
     udp.endPacket();
     Serial.println("Wake-on-LAN packet sent!");
 }
