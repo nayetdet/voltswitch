@@ -8,7 +8,7 @@ bool healthy(void) {
 }
 
 bool shutdown(void) {
-    int code = request(API_URL "/shutdown", "GET");
+    int code = request(API_URL "/shutdown", "POST");
     return code >= 200 && code < 300;
 }
 
