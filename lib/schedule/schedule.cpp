@@ -17,7 +17,7 @@ void setupScheduleHours(void) {
             tokenEnd++;
         }
 
-        if (*tokenEnd != '\0' || tokenValue < 0 || tokenValue >= 24) {
+        if (tokenEnd == token || *tokenEnd != '\0' || tokenValue < 0 || tokenValue >= 24) {
             Serial.printf("Invalid schedule hour ignored: %s\n", token);
         } else if (scheduleHoursCount >= SCHEDULE_HOURS_MAX_COUNT) {
             Serial.printf("Schedule hour ignored, too many values: %ld\n", tokenValue);
@@ -45,9 +45,13 @@ bool isWithinSchedule(struct tm timeinfo) {
 }
 
 long secondsUntilNextSchedule(struct tm timeinfo) {
-    const int BEST_DIFF = 24 * 60 * 60; // 1 day
-    int currentDiff = BEST_DIFF;
-    int currentSeconds = timeinfo.tm_hour * 60 * 60 + timeinfo.tm_min * 60 + timeinfo.tm_sec;
+    const int MAX_WAIT_SECONDS = 24 * 60 * 60;
+    int currentDiff = MAX_WAIT_SECONDS;
+    int currentSeconds = timeinfo.tm_hour * 3600 + timeinfo.tm_min * 60 + timeinfo.tm_sec;
+    if (isWithinSchedule(timeinfo)) {
+        return 3600 - timeinfo.tm_min * 60 - timeinfo.tm_sec;
+    }
+
     for (size_t i = 0; i < scheduleHoursCount; i++) {
         int targetHour = scheduleHours[i];
         if (targetHour < 0 || targetHour >= 24) {
@@ -57,7 +61,7 @@ long secondsUntilNextSchedule(struct tm timeinfo) {
         int targetSeconds = targetHour * 60 * 60;
         int diff = targetSeconds - currentSeconds;
         if (diff <= 0) {
-            diff += BEST_DIFF; // adds 1 day
+            diff += MAX_WAIT_SECONDS;
         }
 
         if (diff < currentDiff) {
