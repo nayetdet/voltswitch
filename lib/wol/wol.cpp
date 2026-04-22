@@ -4,7 +4,7 @@ static bool buildMACAddress(uint8_t macAddress[WOL_MAC_ADDRESS_LENGTH]);
 static void buildPacket(uint8_t packet[WOL_PACKET_LENGTH], uint8_t macAddress[WOL_MAC_ADDRESS_LENGTH]);
 static void sendPacket(WiFiUDP& udp, const uint8_t packet[WOL_PACKET_LENGTH]);
 
-WiFiUDP udp;
+static WiFiUDP udp;
 
 void wakeOnLan(void) {
     uint8_t macAddress[WOL_MAC_ADDRESS_LENGTH];

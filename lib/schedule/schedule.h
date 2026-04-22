@@ -2,5 +2,8 @@
 
 #include <Arduino.h>
 
-bool isWithinSchedule(const int *const allowedHours, size_t size, struct tm timeinfo);
-long secondsUntilNextSchedule(const int *const allowedHours, size_t size, struct tm timeinfo);
+constexpr size_t SCHEDULE_HOURS_MAX_COUNT = 24;
+
+void setupScheduleHours(void);
+bool isWithinSchedule(struct tm timeinfo);
+long secondsUntilNextSchedule(struct tm timeinfo);
