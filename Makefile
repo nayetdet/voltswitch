@@ -15,7 +15,8 @@ monitor:
 	pio device monitor -b $(BAUD_RATE) -p $(PORT)
 
 reset:
-	pio device reset -p $(PORT)
+	pio run -t reset
+	$(MAKE) monitor
 
 clean:
 	pio run -t clean
