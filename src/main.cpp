@@ -39,6 +39,15 @@ void loop(void) {
         );
 
         shutdown();
+    } else {
+        Serial.printf(
+            "No action at %02d:%02d:%02d (shouldBeOnline=%d, isOnline=%d)\n",
+            timeinfo.tm_hour,
+            timeinfo.tm_min,
+            timeinfo.tm_sec,
+            shouldBeOnline,
+            isOnline
+        );
     }
 
     long sleepTime = secondsUntilNextSchedule(timeinfo);
