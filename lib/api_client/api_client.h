@@ -1,11 +1,7 @@
 #pragma once
 
-#include <Arduino.h>
-#include <WiFi.h>
-#include <HTTPClient.h>
-
-constexpr size_t API_TIMEOUT_MS = 5000;
-constexpr size_t API_URL_MAX_LENGTH = 128;
+#include "http.h"
 
 bool healthy(void);
+bool unhealthy(void);
 bool shutdown(void);

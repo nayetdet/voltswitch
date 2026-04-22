@@ -1,3 +1,4 @@
+#include <actions.h>
 #include <api_client.h>
 #include <schedule.h>
 #include <wifi.h>
@@ -29,7 +30,7 @@ void loop(void) {
             timeinfo.tm_sec
         );
 
-        wakeOnLan();
+        retry(wakeOnLan, healthy);
     } else if (!shouldBeOnline && isOnline) {
         Serial.printf(
             "Shutdown at %02d:%02d:%02d\n",
@@ -38,7 +39,7 @@ void loop(void) {
             timeinfo.tm_sec
         );
 
-        shutdown();
+        retry([]() { shutdown(); }, unhealthy);
     } else {
         Serial.printf(
             "No action at %02d:%02d:%02d (shouldBeOnline=%d, isOnline=%d)\n",
