@@ -4,6 +4,11 @@
 #include "wifi.h"
 #include "wol.h"
 
+constexpr unsigned long WOL_CHECK_DELAY_MS = 45000;
+constexpr unsigned long WOL_RETRY_DELAY_MS = 30000;
+constexpr unsigned long SHUTDOWN_CHECK_DELAY_MS = 10000;
+constexpr unsigned long SHUTDOWN_RETRY_DELAY_MS = 10000;
+
 void setup(void) {
     Serial.begin(115200);
     configTzTime(TZ, "pool.ntp.org");
@@ -30,7 +35,7 @@ void loop(void) {
             timeinfo.tm_sec
         );
 
-        retry(wakeOnLan, healthy);
+        retry(wakeOnLan, healthy, WOL_CHECK_DELAY_MS, WOL_RETRY_DELAY_MS);
     } else if (!shouldBeOnline && isOnline) {
         Serial.printf(
             "Shutdown at %02d:%02d:%02d\n",
@@ -39,7 +44,7 @@ void loop(void) {
             timeinfo.tm_sec
         );
 
-        retry([]() { shutdown(); }, unhealthy);
+        retry([]() { shutdown(); }, unhealthy, SHUTDOWN_CHECK_DELAY_MS, SHUTDOWN_RETRY_DELAY_MS);
     } else {
         Serial.printf(
             "No action at %02d:%02d:%02d (shouldBeOnline=%d, isOnline=%d)\n",

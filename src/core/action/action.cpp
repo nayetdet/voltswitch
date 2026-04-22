@@ -1,20 +1,22 @@
 #include "action.h"
 
-void retry(void (*fn)(), bool (*shouldStop)()) {
+void retry(void (*fn)(), bool (*shouldStop)(), unsigned long earlyDelay, unsigned long lateDelay) {
     for (size_t i = 0; i < ACTION_MAX_RETRIES; i++) {
         Serial.printf("Action attempt %u/%u\n", i + 1, ACTION_MAX_RETRIES);
         fn();
+        Serial.printf("Waiting %lu ms before checking state\n", earlyDelay);
+        delay(earlyDelay);
 
         if (shouldStop()) {
-            Serial.println("Desired state reached, stopping attempts");
+            Serial.printf("Desired state reached on attempt %u\n", i + 1);
             break;
         }
 
         if (i < ACTION_MAX_RETRIES - 1) {
-            Serial.printf("State not reached yet, retrying in %u ms\n", ACTION_RETRY_DELAY);
-            delay(ACTION_RETRY_DELAY);
+            Serial.printf("State not reached yet, retrying in %lu ms\n", lateDelay);
+            delay(lateDelay);
+        } else {
+            Serial.println("Max retries reached, giving up");
         }
     }
-
-    Serial.println("Action attempts finished");
 }
