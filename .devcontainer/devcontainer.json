@@ -1,31 +1,39 @@
 {
-  "name": "platformio",
+  "name": "workspace",
 
-  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".",
+		"args": {
+			"FEDORA_COMPAT" : "1" // enables fedora compatibility mode (extra dialout group with gid 18)
+		}
+	},
 
   "mounts": [
-    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind",
     "source=${localEnv:HOME}/.codex,target=/home/vscode/.codex,type=bind"
   ],
 
+  "runArgs": [
+    "--privileged",
+    "--security-opt=label=disable"
+  ],
+  
+  "postAttachCommand": "sudo service udev restart || true",
+  
   "features": {
     "ghcr.io/devcontainers/features/node:1": {}
   },
 
-  "runArgs": [
-    "--privileged",
-    "--security-opt=label=disable",
-    "--device=/dev/ttyUSB0",
-    "--device=/dev/ttyACM0"
-  ],
-
-  "postCreateCommand": "pip install platformio",
-  
   "customizations": {
     "vscode": {
       "extensions": [
-        "platformio.platformio-ide"
+        "platformio.platformio-ide",
+        "ms-vscode.cpptools"
       ]
     }
+  },
+
+  "remoteEnv": {
+    "PLATFORMIO_CORE_DIR": "/home/vscode/.platformio"
   }
 }
