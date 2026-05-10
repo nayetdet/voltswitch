@@ -1,0 +1,31 @@
+{
+  "name": "platformio",
+
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+
+  "mounts": [
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind",
+    "source=${localEnv:HOME}/.codex,target=/home/vscode/.codex,type=bind"
+  ],
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {}
+  },
+
+  "runArgs": [
+    "--privileged",
+    "--security-opt=label=disable",
+    "--device=/dev/ttyUSB0",
+    "--device=/dev/ttyACM0"
+  ],
+
+  "postCreateCommand": "pip install platformio",
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "platformio.platformio-ide"
+      ]
+    }
+  }
+}
